@@ -1,11 +1,20 @@
-import numpy as np
-import random as rand
-from scipy import spatial
+#----------------------------------------------#
+# Radiation Detection and Imaging technologies #
+#                                              #
+#----------------------------------------------#
+
+#  core library imports
 import sys
-import dumper
+import random as rand
+
+# special library imports
+import numpy as np
+from scipy import spatial
+
+
 
 # read in pad file
-with open('3d.kicad_pcb') as f:
+with open('../In/3d.kicad_pcb') as f:
     text = f.read()
 
 
@@ -13,7 +22,7 @@ class PcbObject:
     def __repr__(self):
         """
 
-        :return:
+        :return: string
         """
         return "{}".format(self.__dict__)
 
@@ -144,6 +153,9 @@ chans = np.unique(pad_c)
 n_chans = len(chans)
 if -1 in chans:
     n_chans -= 1
+
+out = np.transpose([pad_x, pad_y])
+np.savetxt("kicad_matrix.csv", out, delimiter=",")
 
 # define nearest channel sample binning using native KDTree search
 pad_tree = spatial.cKDTree(np.transpose([pad_x, pad_y]))
