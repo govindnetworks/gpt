@@ -5,7 +5,7 @@ __pycache__/
 
 # C extensions
 *.so
-
+*img.pdf
 # Distribution / packaging
 .Python
 build/
@@ -130,3 +130,4 @@ dmypy.json
 /kicad_matrix.txt
 /In/3d.kicad_pcb
 /out/kicad_matrix.csv
+/3-D_cov-gauss_channel-response.pdf
