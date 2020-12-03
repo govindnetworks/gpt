@@ -13,6 +13,8 @@ import numpy as np
 import random as rand
 from scipy import spatial
 import matplotlib.pyplot as plt
+import memory_profiler
+from memory_profiler import profile
 
 #custom library import
 import nngpt
@@ -115,12 +117,17 @@ def build_kd_tree(text):
     gnd_net = 'GND'
 
     for obj in kicad_pcb.content:
+        #{'name': 'net', 'content': '61 b0'}
+        #{'name': 'net', 'content': '60 a0'}
         if obj.name == 'net':
             split = obj.content.split()
             net_map[int(split[0])] = split[1]
         elif obj.name == 'via':
             net = ''
             at = (0, 0)
+            #{'name': 'via', 'content': [{'name': 'at', 'content': '41.877219 22.386874'},
+            # {'name': 'size', 'content': '0.25'}, {'name': 'drill', 'content': '0.15'},
+            # {'name': 'layers', 'content': 'F.Cu In7.Cu'}, {'name': 'net', 'content': '15'}]}
             for obj1 in obj.content:
                 if obj1.name == 'at':
                     split = obj1.content.split()
@@ -167,9 +174,9 @@ def build_kd_tree(text):
     # define nearest channel sample binning using native KDTree search
     pad_tree = spatial.cKDTree(np.transpose([pad_x, pad_y]))
     return pad_tree, n_chans,pad_c
-
-#moved into nngpt module
-def chan_counts(xy, pd_tree, pad_c, split=True, randomize=True):
+"""
+#moved into nngpt module must be removed
+  def chan_counts(xy, pd_tree, pad_c, split=True, randomize=True):
     if randomize:
         np.random.shuffle(xy)
 
@@ -184,6 +191,7 @@ def chan_counts(xy, pd_tree, pad_c, split=True, randomize=True):
         return zip(pad_c[list(pads)], counts)
     except ValueError:
         return []
+*/"""
 
 def plot_tomo_for_samples(xy, name, n_std=4, seg_name='3-D'):
     logging.getLogger().setLevel(logging.INFO)
